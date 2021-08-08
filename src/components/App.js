@@ -10,7 +10,7 @@ class App extends React.Component {
     //dispatch action
     const { store } = this.props
 
-    const unsubscribe = store.subscribe((state)=>{
+    const unsubscribe = store.subscribe(()=>{
       console.log('updated state')
       this.forceUpdate()
     });
@@ -26,7 +26,9 @@ class App extends React.Component {
   }
 
   render(){
-    const  movies  = this.props.store.getState()
+    const {store } = this.props
+    const  {movies} = store.getState()
+    console.log('updated state',store.getState());
     return (
       <div className="App">
         <Navbar />
@@ -37,7 +39,7 @@ class App extends React.Component {
           </div>
           <div className="list">
             {movies.map(item=>{
-              return <MovieCard movie={item}/>
+              return <MovieCard movie={item} store={store}/>
             })}
           </div>
         </div>
