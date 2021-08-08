@@ -2,6 +2,7 @@ import {data } from '../data'
 import Navbar from './Navbar';
 import MovieCard from './MovieCard';
 import React from 'react';
+import { addMovies } from '../actions';
 class App extends React.Component {
 
   componentDidMount(){
@@ -9,16 +10,18 @@ class App extends React.Component {
     //dispatch action
     const { store } = this.props
 
-    store.subscribe((state)=>{
+    const unsubscribe = store.subscribe((state)=>{
       console.log('updated state')
       this.forceUpdate()
     });
+    //call unsubscribe() to unsubscribe
 
-    store.dispatch({
-      type:'ADD_MOVIES',
-      movies:data
-    })
-    
+    // store.dispatch({
+    //   type:'ADD_MOVIES',
+    //   movies:data
+    // })
+
+    store.dispatch(addMovies(data))
      console.log('state',store.getState())
   }
 
