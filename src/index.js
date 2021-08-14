@@ -3,10 +3,10 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './components/App';
 import { createStore }  from 'redux'
-import movies from './reducers/index'
+import rootReducer from './reducers/index'
 
 
-const store = createStore(movies)
+const store = createStore(rootReducer)
 // console.log('before state',store.getState())
 // store.dispatch({type: 'ADD_MOVIES', movies:[{name:'superman'}]})
 // console.log('store', store);

@@ -32,7 +32,7 @@ class App extends React.Component {
 
   render(){
     const {store } = this.props
-    const  {movies, favourites} = store.getState()
+    const  {movies:{movies, favourites}} = store.getState()
     const { selectedTab } = this.state
     const list = this.state.selectedTab === 'movies' ? movies : favourites
     console.log('updated state',store.getState());
