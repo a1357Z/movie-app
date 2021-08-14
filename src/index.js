@@ -12,14 +12,23 @@ import rootReducer from './reducers/index'
  * @param action
 *  @summary logger({ dispatch, getState})(next)(action)
  */
-const logger = function({ dispatch, getState}){
-  return function(next){
-    return function(action){
-      //middlerware code
-      console.log('action type = ', action.type);
-      next(action)
-    }
-  }
+// const logger = function({ dispatch, getState}){
+//   return function(next){
+//     return function(action){
+//       //middlerware code
+//       console.log('action type = ', action.type);
+//       next(action)
+//     }
+//   }
+// }
+
+/**
+ * another way of writing the logger function
+ * 
+ */
+const logger = ({dispatch, getState}) => (next) => (action) => {
+  console.log('action type', action.type);
+  next(action)
 }
 
 const store = createStore(rootReducer, applyMiddleware(logger))
