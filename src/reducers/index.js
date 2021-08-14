@@ -1,5 +1,4 @@
-import { ADD_MOVIES,REMOVE_FROM_FAV } from "../actions"
-import { ADD_TO_FAV } from '../actions'
+import { ADD_MOVIES,REMOVE_FROM_FAV, SEARCH_MOVIE,ADD_TO_FAV } from "../actions"
 import { combineReducers } from 'redux';
 const st={
   movies: [],
@@ -29,9 +28,14 @@ switch (action.type) {
 
 const initialSearchState = { result: { }}
 export function search( state = initialSearchState, action){
-return ({
-  result: {}
-})
+  switch(action.type){
+    case SEARCH_MOVIE:
+      return{
+        ...state, result: action.result
+      }
+    default:
+      return state
+  }
 }
 
 //combining reducers with combineReducers

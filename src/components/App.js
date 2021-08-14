@@ -38,7 +38,7 @@ class App extends React.Component {
     console.log('updated state',store.getState());
     return (
       <div className="App">
-        <Navbar />
+        <Navbar store={store} />
         <div className="main">
           <div className="tabs">
             <div className={`tab ${ selectedTab === 'movies' ? 'active-tabs' : null }`} onClick={()=>this.setState({selectedTab:'movies'})}>Movies</div>

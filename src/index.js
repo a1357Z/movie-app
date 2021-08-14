@@ -4,7 +4,7 @@ import './index.css';
 import App from './components/App';
 import { createStore, applyMiddleware }  from 'redux'
 import rootReducer from './reducers/index'
-
+import thunk from 'redux-thunk';
 /**
  * implementation of currying
  * @param  obj { dispatch, getState}
@@ -27,11 +27,21 @@ import rootReducer from './reducers/index'
  * 
  */
 const logger = ({dispatch, getState}) => (next) => (action) => {
-  console.log('action type', action.type);
+  if(typeof action !== 'function'){
+    console.log('action type', action.type);
+  }
   next(action)
 }
 
-const store = createStore(rootReducer, applyMiddleware(logger))
+const customThunk = ({dispatch, getState}) => (next) => (action) => {
+  if(typeof action === 'function'){
+    action(dispatch)
+    return
+  }
+  next(action)
+} 
+
+const store = createStore(rootReducer, applyMiddleware(logger, customThunk))
 // console.log('before state',store.getState())
 // store.dispatch({type: 'ADD_MOVIES', movies:[{name:'superman'}]})
 // console.log('store', store);
