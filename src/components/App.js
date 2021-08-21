@@ -1,11 +1,12 @@
 import {data } from '../data'
 import Navbar from './Navbar';
 import MovieCard from './MovieCard';
-import React from 'react';
+import React,{ Component } from 'react';
 import { addMovies } from '../actions';
+import { StoreContext } from '../index'
 class App extends React.Component {
-  constructor(){
-    super()
+  constructor(props){
+    super(props)
     this.state={
       selectedTab: 'movies'
     }
@@ -36,17 +37,18 @@ class App extends React.Component {
     const { selectedTab } = this.state
     const list = this.state.selectedTab === 'movies' ? movies : favourites
     console.log('updated state',store.getState());
-    return (
+
+    return(
       <div className="App">
-        <Navbar store={store} />
+        <Navbar />
         <div className="main">
           <div className="tabs">
             <div className={`tab ${ selectedTab === 'movies' ? 'active-tabs' : null }`} onClick={()=>this.setState({selectedTab:'movies'})}>Movies</div>
             <div className={`tab ${ selectedTab === 'movies' ? null : 'active-tabs'  }`} onClick={()=>this.setState({selectedTab:'favourites'})}>Fav</div>
           </div>
           <div className="list">   
-           {
-             list.map((item,index)=>{
+            {
+              list.map((item,index)=>{
               let isFav = favourites.indexOf(item)!== -1
               return <MovieCard 
                 movie={item}
@@ -55,14 +57,31 @@ class App extends React.Component {
                 isFavourite={isFav}
               />
             })
-           }
-           {list.length === 0 ? <div className="no-movies">no movies to display</div>: null}
+            }
+            {list.length === 0 ? <div className="no-movies">no movies to display</div>: null}
           </div>
         </div>
       </div>
     );
+
+
+    
   }
   
 }
 
-export default App;
+
+class AppWrapper extends Component {
+  render() {
+    return (
+      <StoreContext.Consumer>
+        {(store) => {
+          return <App store = {store}/>
+        }}
+      </StoreContext.Consumer>
+    )
+  }
+}
+
+
+export default AppWrapper;

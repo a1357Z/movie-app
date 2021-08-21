@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { searchMovie } from '../actions'
-export default class Navbar extends Component {
+import { StoreContext} from '../index'
+class Navbar extends Component {
   constructor(props){
     super(props)
     this.state={
@@ -52,3 +53,17 @@ export default class Navbar extends Component {
     )
   }
 }
+
+class NavWrapper extends Component {
+  render() {
+    return (
+      <StoreContext.Consumer>
+        {(store) => {
+          return <Navbar store = {store}/>
+        }}
+      </StoreContext.Consumer>
+    )
+  }
+}
+
+export default NavWrapper

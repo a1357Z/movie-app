@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { createContext } from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './components/App';
@@ -47,9 +47,25 @@ const store = createStore(rootReducer, applyMiddleware(logger, customThunk))
 // console.log('store', store);
 // console.log('after state',store.getState()); //behind the scenes the reducer is called that returns an empty array as state.
 
+export const StoreContext = createContext()
+
+class Provider extends React.Component{
+  render(){
+    const { store } = this.props
+    console.log('props in provider',this.props);
+    return(
+      <StoreContext.Provider value={store}>
+        {this.props.children}
+      </StoreContext.Provider>
+    )
+  }
+}
+
 ReactDOM.render(
-  <React.StrictMode>
-    <App store={store} />
-  </React.StrictMode>,
+  <Provider store={store}>
+      <App />
+  </Provider>
+  ,
   document.getElementById('root')
 );
+
