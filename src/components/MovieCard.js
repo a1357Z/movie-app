@@ -1,15 +1,16 @@
 import React, { Component } from 'react'
 import { addToFavourite, removeFromFavourite } from '../actions'
-export default class MovieCard extends Component {
+import { connect } from '../index'
+class MovieCard extends Component {
 
   addToFav=(movie)=>{
-    const { store } = this.props
-    store.dispatch(addToFavourite(movie))
+    const { dispatch } = this.props
+    dispatch(addToFavourite(movie))
   }
 
   removeFromFav=(movie)=>{
-    const { store } = this.props
-    store.dispatch(removeFromFavourite(movie))
+    const { dispatch } = this.props
+    dispatch(removeFromFavourite(movie))
   }
 
   render() {
@@ -38,3 +39,14 @@ export default class MovieCard extends Component {
     )
   }
 }
+
+const mapStateToProps = (state) => {
+  return{
+    movies: state.movies,
+    search: state.search
+  }
+}
+
+
+const connectedMovieComponent = connect(mapStateToProps)(MovieCard)
+ export default connectedMovieComponent;

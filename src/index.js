@@ -69,3 +69,46 @@ ReactDOM.render(
   document.getElementById('root')
 );
 
+
+export function connect(callback){
+  
+  return function(Component){
+
+      class ConnectedComponent extends React.Component{
+        constructor(props){
+          super(props)
+           this.unsubscribe = this.props.store.subscribe(() => this.forceUpdate())
+        }
+
+        componentWillUnmount(){
+          this.unsubscribe()
+        }
+        render(){
+          const { store } = this.props
+          const props = callback(store.getState())
+          return(
+            <Component
+              {...this.props}
+              {...props}
+              dispatch={store.dispatch}
+            /> // this is equivlent to <Component movies={movies} search={search}/>
+          )
+        }
+      }
+
+      class ConnectedComponentWrapper extends React.Component{
+        render(){
+          return(
+            <StoreContext.Consumer>
+              {(store) => {
+                return <ConnectedComponent store={store} {...this.props} />
+              }}
+            </StoreContext.Consumer>
+          )
+        }
+      }
+
+      return ConnectedComponentWrapper;
+  }
+
+}

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { searchMovie } from '../actions'
-import { StoreContext} from '../index'
+import { StoreContext, connect} from '../index'
 class Navbar extends Component {
   constructor(props){
     super(props)
@@ -12,12 +12,12 @@ class Navbar extends Component {
   handleSearch=()=>{
     //search and update showSearchResults
     const { searchText } = this.state
-    const { store } = this.props
-    store.dispatch(searchMovie(searchText))
+    const { dispatch } = this.props
+    dispatch(searchMovie(searchText))
     this.setState({showSearchResults: true})
-    store.subscribe(()=>{
-      this.forceUpdate()
-    })
+    // store.subscribe(()=>{
+    //   this.forceUpdate()
+    // })
   }
 
   handleChange=(e)=>{
@@ -27,10 +27,10 @@ class Navbar extends Component {
   }
 
   render() {
-    
-    const { store } = this.props
-    const { search: {result: {data}}} = store.getState()
     const { showSearchResults, searchText } = this.state
+    const { movies, search: {result: {data} } }= this.props;
+    
+
     return (
       <div className="nav">
         <div className="search-container">
@@ -51,19 +51,30 @@ class Navbar extends Component {
         
       </div>
     )
+
+}
+}
+
+// class NavWrapper extends Component {
+//   render() {
+//     return (
+//       <StoreContext.Consumer>
+//         {(store) => {
+//           return <Navbar store = {store}/>
+//         }}
+//       </StoreContext.Consumer>
+//     )
+//   }
+// }
+
+const mapStateToProps = (state) => {
+  return{
+    movies: state.movies,
+    search: state.search
   }
 }
 
-class NavWrapper extends Component {
-  render() {
-    return (
-      <StoreContext.Consumer>
-        {(store) => {
-          return <Navbar store = {store}/>
-        }}
-      </StoreContext.Consumer>
-    )
-  }
-}
+const connectedNavbarComponent = connect(mapStateToProps)(Navbar)
+ export default connectedNavbarComponent;
 
-export default NavWrapper
+// export default NavWrapper
